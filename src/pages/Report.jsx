@@ -1,13 +1,12 @@
 import { useMemo, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { CircleMarker, MapContainer, TileLayer, useMapEvents } from 'react-leaflet'
-import { Camera, MapPin, Sparkles, X } from 'lucide-react'
+import { Camera, Sparkles, X } from 'lucide-react'
 import Header from '../components/Header'
 import MatchBadge from '../components/MatchBadge'
 import { useToast } from '../components/Toast'
 import { storage } from '../services/storage'
 import { createItem, getItem } from '../services/itemService'
-import { CATEGORIES, COLLEGE, MATCH_THRESHOLD, formatWhen } from '../lib/config'
+import { CATEGORIES, MATCH_THRESHOLD, formatWhen } from '../lib/config'
 import { compressImage } from '../lib/imageCompress'
 import { autofillItem, guessFromText } from '../services/aiService'
 
@@ -15,15 +14,6 @@ function localNow() {
   const now = new Date()
   now.setMinutes(now.getMinutes() - now.getTimezoneOffset())
   return now.toISOString().slice(0, 16)
-}
-
-function ClickToPin({ onPick }) {
-  useMapEvents({
-    click(event) {
-      onPick({ lat: event.latlng.lat, lng: event.latlng.lng })
-    },
-  })
-  return null
 }
 
 export default function Report() {
@@ -37,7 +27,6 @@ export default function Report() {
   const [photo, setPhoto] = useState(null)
   const [aiTagged, setAiTagged] = useState(false)
   const [compressing, setCompressing] = useState(false)
-  const [pin, setPin] = useState(null)
   const [created, setCreated] = useState(null)
   const [match, setMatch] = useState(null)
   const [form, setForm] = useState({
@@ -109,8 +98,6 @@ export default function Report() {
         type,
         dateTime: iso,
         timeLabel: formatWhen(iso),
-        lat: pin?.lat ?? null,
-        lng: pin?.lng ?? null,
         photo,
         aiTagged,
         secretQuestion: type === 'found' ? form.secretQuestion.trim() : '',
@@ -133,7 +120,7 @@ export default function Report() {
     <div className="min-h-full pb-8">
       <Header user={user} title="Report an item" back />
 
-      <form onSubmit={submit} className="space-y-4 px-4 pt-4">
+      <form onSubmit={submit} className="space-y-4 px-4 pt-4 lg:mx-auto lg:max-w-3xl lg:px-8 lg:pb-10 lg:pt-6">
         {/* Lost / Found toggle */}
         <div className="grid grid-cols-2 gap-2 rounded-2xl bg-white p-1.5 shadow-card">
           <button
@@ -326,49 +313,6 @@ export default function Report() {
           </div>
         </div>
 
-        {/* Optional map pin */}
-        <div className="card p-4">
-          <div className="mb-2 flex items-center justify-between">
-            <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500">
-              Map pin <span className="font-normal normal-case">(optional)</span>
-            </p>
-            {pin ? (
-              <button
-                type="button"
-                onClick={() => setPin(null)}
-                className="text-[10px] font-bold text-lost"
-              >
-                Remove pin
-              </button>
-            ) : null}
-          </div>
-          <div className="overflow-hidden rounded-xl border border-[#E3E8F4]">
-            <MapContainer
-              center={pin ? [pin.lat, pin.lng] : [COLLEGE.lat, COLLEGE.lng]}
-              zoom={16}
-              scrollWheelZoom={false}
-              className="h-36 w-full"
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <ClickToPin onPick={setPin} />
-              {pin ? (
-                <CircleMarker
-                  center={[pin.lat, pin.lng]}
-                  radius={9}
-                  pathOptions={{ color: '#fff', weight: 3, fillColor: '#E5572C', fillOpacity: 1 }}
-                />
-              ) : null}
-            </MapContainer>
-          </div>
-          <p className="mt-2 flex items-center gap-1 text-[10px] font-medium text-slate-400">
-            <MapPin size={11} className="text-amber" />
-            {pin ? 'Pin added to the campus map.' : 'Tap the map to drop a pin.'}
-          </p>
-        </div>
-
         {/* Secret question only for found items */}
         {type === 'found' ? (
           <div className="card border-found/20 p-4">
@@ -396,7 +340,7 @@ export default function Report() {
 
       {/* Success / match modal */}
       {created ? (
-        <div className="phone-modal px-5">
+        <div className="app-modal px-5">
           <div className="w-full max-w-[330px] animate-pop rounded-3xl bg-white p-6 text-center shadow-2xl">
             {match ? (
               <>

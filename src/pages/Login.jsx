@@ -44,19 +44,19 @@ export default function Login() {
   const demoLogin = () => {
     signIn({
       id: 'u-demo',
-      name: 'Naveen Sharma',
-      initials: 'NS',
+      name: 'Campus User',
+      initials: 'CU',
       joinedAt: new Date().toISOString(),
     })
   }
 
   return (
-    <div className="hero-gradient relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-5 py-10">
+    <div className="hero-gradient relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-5 py-10 lg:px-8">
       {/* decorative glows */}
       <div className="pointer-events-none absolute -left-16 top-10 h-64 w-64 rounded-full bg-amber/20 blur-3xl" />
       <div className="pointer-events-none absolute -right-20 bottom-0 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
 
-      <div className="relative w-full max-w-[370px]">
+      <div className="relative w-full max-w-[370px] lg:max-w-[440px]">
         <div className="mb-7 text-center">
           <div className="mx-auto grid h-20 w-20 place-items-center rounded-[1.75rem] border border-white/20 bg-white/10 shadow-2xl backdrop-blur">
             <Undo2 size={40} className="text-amber" strokeWidth={2.6} />
@@ -65,7 +65,7 @@ export default function Login() {
           <p className="mt-1 text-sm font-medium text-white/70">what you lose comes back</p>
         </div>
 
-        <form onSubmit={submit} className="rounded-[2rem] bg-white p-6 shadow-2xl shadow-black/20">
+        <form onSubmit={submit} className="rounded-[2rem] bg-white p-6 shadow-2xl shadow-black/20 lg:p-8">
           <div className="mb-5">
             <span className="pill bg-amber/20 text-[#8A6A0A]">
               <Sparkles size={11} /> Campus lost &amp; found
@@ -88,7 +88,7 @@ export default function Login() {
                 setName(event.target.value)
                 setError('')
               }}
-              placeholder="e.g. Naveen Sharma"
+              placeholder="Enter your name"
               autoFocus
               autoComplete="name"
               className="field pl-10"
@@ -107,7 +107,7 @@ export default function Login() {
           </div>
 
           <button type="button" onClick={demoLogin} className="btn-ghost w-full">
-            <Sparkles size={15} className="text-amber" /> Demo login (Naveen · NS)
+            <Sparkles size={15} className="text-amber" /> Demo login
           </button>
 
           <p className="mt-4 flex items-center justify-center gap-1.5 text-center text-[10px] font-medium text-slate-400">

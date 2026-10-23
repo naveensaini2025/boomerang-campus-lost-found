@@ -27,63 +27,36 @@
   }
 }
 
-/* ---------- Phone shell ---------- */
+/* ---------- App shell: full-screen mobile, sidebar layout on desktop ---------- */
 .app-stage {
-  position: relative;
   min-height: 100dvh;
+  background: #edf0f8;
+}
+
+.app-shell {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  overflow: hidden;
-}
-
-/* Soft pale-yellow glow behind the phone (desktop only) */
-.app-stage::before {
-  content: '';
-  display: none;
-  position: absolute;
-  width: 520px;
-  height: 520px;
-  border-radius: 9999px;
-  background: radial-gradient(circle, rgba(242, 176, 30, 0.3) 0%, rgba(242, 176, 30, 0) 68%);
-  filter: blur(6px);
-  pointer-events: none;
-}
-
-@media (min-width: 768px) {
-  .app-stage {
-    padding: 28px 16px;
-    background:
-      radial-gradient(circle at 15% 20%, rgba(75, 47, 160, 0.08), transparent 40%),
-      radial-gradient(circle at 85% 80%, rgba(15, 157, 116, 0.07), transparent 40%),
-      #edf0f8;
-  }
-  .app-stage::before {
-    display: block;
-  }
-}
-
-.phone-shell {
-  position: relative;
+  min-height: 100dvh;
   width: 100%;
-  height: 100dvh;
+}
+
+.app-main {
+  position: relative;
   display: flex;
+  min-width: 0;
+  flex: 1;
   flex-direction: column;
-  overflow: hidden;
+  height: 100dvh;
   background: #f4f6fb;
 }
 
-@media (min-width: 768px) {
-  .phone-shell {
-    width: 390px;
-    height: 820px;
-    max-height: calc(100dvh - 56px);
-    border: 10px solid #1b2a6b;
-    border-radius: 2.5rem;
-    box-shadow:
-      0 40px 90px -20px rgba(27, 42, 107, 0.45),
-      0 0 0 1px rgba(27, 42, 107, 0.12);
+.app-scroll {
+  flex: 1;
+  overflow-y: auto;
+}
+
+@media (min-width: 1024px) {
+  .app-main {
+    border-left: 1px solid rgba(27, 42, 107, 0.08);
   }
 }
 
@@ -96,30 +69,18 @@
   display: none;
 }
 
-/* Toast + modals sit inside the phone on desktop, full-screen on mobile. */
-.phone-modal {
+/* Toast + modals sit above the whole app on every screen size. */
+.app-modal {
   position: fixed;
   inset: 0;
   z-index: 80;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-y: auto;
   background: rgba(27, 42, 107, 0.5);
+  padding: 24px 20px;
   backdrop-filter: blur(4px);
-}
-
-@media (min-width: 768px) {
-  .phone-modal {
-    inset: auto;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 390px;
-    height: min(820px, calc(100dvh - 56px));
-    padding: 0 20px;
-    overflow: hidden;
-    border-radius: 2.5rem;
-  }
 }
 
 /* ---------- Gradients ---------- */
@@ -165,35 +126,6 @@
   .pill {
     @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide;
   }
-}
-
-/* ---------- Map pins (divIcon, no image assets needed) ---------- */
-.map-pin {
-  width: 22px;
-  height: 22px;
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
-  border: 3px solid #fff;
-  box-shadow: 0 3px 10px rgba(27, 42, 107, 0.35);
-}
-.map-pin.lost {
-  background: #e5572c;
-}
-.map-pin.found {
-  background: #0f9d74;
-}
-
-.leaflet-container {
-  font-family: 'Inter', sans-serif;
-  background: #e9edf7;
-}
-.leaflet-popup-content-wrapper {
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(27, 42, 107, 0.2);
-}
-.leaflet-popup-content {
-  margin: 10px 12px;
-  font-size: 12px;
 }
 
 /* ---------- Status stepper arrows ---------- */

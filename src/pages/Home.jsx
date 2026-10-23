@@ -42,7 +42,7 @@ export default function Home() {
         <FilterChips active={filter} onChange={setFilter} />
       </Header>
 
-      <div className="px-4 pt-4">
+      <div className="px-4 pt-4 lg:mx-auto lg:max-w-6xl lg:px-8 lg:pb-10 lg:pt-6">
         {banner ? (
           <button
             onClick={() => navigate(`/item/${banner.item.id}`)}
@@ -78,7 +78,7 @@ export default function Home() {
         </div>
 
         {filtered.length ? (
-          <div className="space-y-2.5">
+          <div className="grid gap-2.5 md:grid-cols-2 xl:grid-cols-3">
             {filtered.map((item) => (
               <ItemCard key={item.id} item={item} />
             ))}

@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom'
 /** Deep blue → purple app header. Home uses the logo row + children (search/chips). */
 export default function Header({ user, title, back = false, children }) {
   const navigate = useNavigate()
-  const initials = user?.initials || 'NS'
+  const initials = user?.initials || 'BO'
 
   return (
-    <header className="hero-gradient relative overflow-hidden px-5 pb-5 pt-5 text-white">
+    <header className="hero-gradient relative overflow-hidden px-5 pb-5 pt-5 text-white lg:px-8 lg:pb-6 lg:pt-6">
       {/* soft decorative glow */}
       <div className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full bg-white/10 blur-2xl" />
       <div className="pointer-events-none absolute -bottom-14 left-10 h-28 w-28 rounded-full bg-amber/20 blur-2xl" />
@@ -49,7 +49,7 @@ export default function Header({ user, title, back = false, children }) {
         </button>
       </div>
 
-      {children ? <div className="relative mt-4 space-y-3">{children}</div> : null}
+      {children ? <div className="relative mt-4 space-y-3 lg:mt-5 lg:max-w-2xl">{children}</div> : null}
     </header>
   )
 }

@@ -23,7 +23,7 @@ export default function FloatingBadges() {
     })
 
   return (
-    <div className="pointer-events-none absolute bottom-[92px] right-1 z-20 flex flex-col items-end gap-2.5">
+    <div className="pointer-events-none absolute bottom-[92px] right-1 z-20 flex flex-col items-end gap-2.5 lg:bottom-8 lg:right-8">
       <MatchBadge score={score} className="pointer-events-auto animate-float opacity-95" />
       <button
         onClick={burst}

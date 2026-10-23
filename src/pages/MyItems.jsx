@@ -56,18 +56,18 @@ export default function MyItems() {
   }
 
   return (
-    <div className="min-h-full pb-8">
+    <div className="min-h-full pb-10">
       <Header user={user} />
 
-      <div className="space-y-3 px-4 pt-4">
-        <div className="flex items-end justify-between px-1">
+      <div className="space-y-3 px-4 pt-4 lg:mx-auto lg:max-w-5xl lg:px-8 lg:pb-12 lg:pt-6">
+        <div className="flex items-end justify-between px-1 lg:items-center">
           <div>
-            <h1 className="text-xl font-black tracking-tight text-ink">My Items</h1>
-            <p className="text-[10px] font-medium text-slate-400">Your posts, claims and good karma.</p>
+            <h1 className="text-xl font-black tracking-tight text-ink lg:text-2xl">My Items</h1>
+            <p className="text-[10px] font-medium text-slate-400 lg:text-xs">Your posts, claims and good karma.</p>
           </div>
           <button
             onClick={logout}
-            className="flex items-center gap-1 rounded-full bg-white px-2.5 py-1.5 text-[9px] font-bold text-slate-500 shadow-sm"
+            className="flex items-center gap-1 rounded-full bg-white px-2.5 py-1.5 text-[9px] font-bold text-slate-500 shadow-sm lg:px-3 lg:text-[10px]"
           >
             <LogOut size={11} /> Log out
           </button>
@@ -139,7 +139,7 @@ export default function MyItems() {
         {/* Posts */}
         {tab === 'posts' ? (
           myPosts.length ? (
-            <div className="space-y-2">
+            <div className="space-y-2 lg:grid lg:grid-cols-2 lg:gap-2 lg:space-y-0 xl:grid-cols-3">
               {myPosts.map((item) => {
                 const meta = categoryMeta(item.category)
                 return (
@@ -192,7 +192,7 @@ export default function MyItems() {
           )
         ) : myClaims.length ? (
           /* Claims */
-          <div className="space-y-2">
+          <div className="space-y-2 lg:grid lg:grid-cols-2 lg:gap-2 lg:space-y-0 xl:grid-cols-3">
             {myClaims.map((claim) => {
               const item = items.find((entry) => entry.id === claim.itemId)
               if (!item) return null

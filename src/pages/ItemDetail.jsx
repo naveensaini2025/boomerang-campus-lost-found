@@ -5,7 +5,7 @@ import {
   Check,
   ChevronRight,
   Clock,
-  MapPin,
+  Handshake,
   MessageCircle,
   Send,
   ShieldCheck,
@@ -236,7 +236,7 @@ export default function ItemDetail() {
     <div className="min-h-full pb-10">
       <Header user={user} title="Item details" back />
 
-      <div className="space-y-3 px-4 pt-4">
+      <div className="space-y-3 px-4 pt-4 lg:mx-auto lg:max-w-4xl lg:px-8 lg:pb-12 lg:pt-6">
         {/* Photo / illustration */}
         <div className="card relative overflow-hidden">
           <div
@@ -469,7 +469,7 @@ export default function ItemDetail() {
 
                 {claim.status === 'approved' ? (
                   <p className="mt-2 flex items-center gap-1 text-[9px] font-semibold text-found">
-                    <MapPin size={10} /> Suggested handover: {HELP_DESK}
+                    <Handshake size={10} /> Suggested handover: {HELP_DESK}
                   </p>
                 ) : null}
 
@@ -530,7 +530,7 @@ export default function ItemDetail() {
         {/* Handover */}
         <div className="card flex items-center gap-3 p-3.5">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-amber/15 text-amber">
-            <MapPin size={19} />
+            <Handshake size={19} />
           </span>
           <div className="min-w-0">
             <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">
@@ -544,7 +544,7 @@ export default function ItemDetail() {
 
       {/* Secret question modal */}
       {claimOpen ? (
-        <div className="phone-modal px-5">
+        <div className="app-modal px-5">
           <div className="w-full max-w-[330px] rounded-3xl bg-white p-5 shadow-2xl">
             <div className="flex items-start justify-between gap-2">
               <div>
@@ -599,7 +599,7 @@ export default function ItemDetail() {
 
       {/* Returned celebration */}
       {returned ? (
-        <div className="phone-modal px-5">
+        <div className="app-modal px-5">
           <div className="w-full max-w-[320px] animate-pop rounded-3xl bg-white p-6 text-center shadow-2xl">
             <div className="flex justify-center">
               <MatchBadge variant="returned" className="scale-110" />

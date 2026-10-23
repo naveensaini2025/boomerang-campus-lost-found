@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom'
 import BottomNav from './components/BottomNav'
+import DesktopNav from './components/DesktopNav'
 import FloatingBadges from './components/FloatingBadges'
 import { ToastProvider } from './components/Toast'
 import { storage } from './services/storage'
@@ -10,7 +11,6 @@ const Home = lazy(() => import('./pages/Home'))
 const Report = lazy(() => import('./pages/Report'))
 const ItemDetail = lazy(() => import('./pages/ItemDetail'))
 const MyItems = lazy(() => import('./pages/MyItems'))
-const MapPage = lazy(() => import('./pages/MapPage'))
 
 function Loader() {
   return (
@@ -27,24 +27,31 @@ function RequireUser() {
   return storage.getUser() ? <Outlet /> : <Navigate to="/login" replace />
 }
 
-/** Centered phone frame on desktop, full-screen app on mobile. */
+/** Full-screen mobile layout; sidebar + wide canvas on desktop. */
 function Shell() {
   const { pathname } = useLocation()
-  const showNav = ['/', '/my-items', '/map'].includes(pathname)
+  const showNav = ['/', '/my-items'].includes(pathname)
 
   return (
     <div className="app-stage">
-      <div className="phone-shell">
-        <ToastProvider>
-          <main className="no-scrollbar relative flex-1 overflow-y-auto">
-            <Suspense fallback={<Loader />}>
-              <Outlet />
-            </Suspense>
-          </main>
+      <div className="app-shell">
+        <DesktopNav />
+        <div className="app-main">
+          <ToastProvider>
+            <main className="no-scrollbar app-scroll">
+              <Suspense fallback={<Loader />}>
+                <Outlet />
+              </Suspense>
+            </main>
 
-          {pathname === '/' ? <FloatingBadges /> : null}
-          {showNav ? <BottomNav /> : null}
-        </ToastProvider>
+            {pathname === '/' ? <FloatingBadges /> : null}
+            {showNav ? (
+              <div className="lg:hidden">
+                <BottomNav />
+              </div>
+            ) : null}
+          </ToastProvider>
+        </div>
       </div>
     </div>
   )
@@ -61,7 +68,6 @@ export default function App() {
             <Route path="/report" element={<Report />} />
             <Route path="/item/:id" element={<ItemDetail />} />
             <Route path="/my-items" element={<MyItems />} />
-            <Route path="/map" element={<MapPage />} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
