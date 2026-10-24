@@ -23,11 +23,15 @@ if not exist "node_modules" (
 )
 
 echo.
-echo Starting Boomerang at http://localhost:5173 ...
-echo Close this window to stop the app.
+echo Starting Boomerang (Frontend + Backend)...
+echo Frontend: http://localhost:5173
+echo Backend:  http://localhost:5000
 echo.
+echo Close this window to stop both servers.
+echo.
+
 start "" "http://localhost:5173"
-call npm run dev -- --port 5173 --strictPort
+call npm run dev
 
 echo.
 echo Boomerang stopped.
