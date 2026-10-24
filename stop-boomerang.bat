@@ -1,7 +1,25 @@
 @echo off
 setlocal
-title Stop Boomerang (Frontend + Backend)
+title Stop Boomerang
 
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$c = Get-NetTCPConnection -LocalPort 5173 -State Listen -ErrorAction SilentlyContinue; if ($c) { $c | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue } }; $c2 = Get-NetTCPConnection -LocalPort 5000 -State Listen -ErrorAction SilentlyContinue; if ($c2) { $c2 | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue } }; Write-Host 'Boomerang stopped. Ports 5173 and 5000 are free.'"
+echo ========================================================
+echo              STOPPING BOOMERANG SERVERS
+echo ========================================================
+echo.
 
-ping -n 2 127.0.0.1 >nul
+powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+"$ports = @(5173, 5000, 5174); ^
+foreach($port in $ports){ ^
+  $conns = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue; ^
+  if($conns){ ^
+    foreach($c in $conns){ ^
+      try{ Stop-Process -Id $c.OwningProcess -Force -ErrorAction SilentlyContinue; Write-Host '[STOPPED]' Port $port (PID $c.OwningProcess) } catch{} ^
+    } ^
+  } ^
+}; ^
+Write-Host ''; ^
+Write-Host 'All Boomerang servers stopped'; ^
+Write-Host 'Ports 5173, 5000 are now free'"
+
+echo.
+timeout /t 3 >nul

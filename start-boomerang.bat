@@ -1,38 +1,59 @@
 @echo off
-setlocal
+setlocal enabledelayedexpansion
 cd /d "%~dp0"
-title Boomerang - Campus Lost & Found
+title Boomerang - Full Stack Server
 
+echo ========================================================
+echo           BOOMERANG - CAMPUS LOST & FOUND
+echo ========================================================
+echo.
+echo [INFO] Checking Node.js...
 where node >nul 2>&1
-if errorlevel 1 (
-  echo.
-  echo Node.js is not installed. Install it from https://nodejs.org and try again.
-  pause
-  exit /b 1
-)
-
-if not exist "node_modules" (
-  echo Installing dependencies...
-  call npm install --no-audit --no-fund
-  if errorlevel 1 (
-    echo.
-    echo npm install failed. Check the error above.
+if %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Node.js not found. Please install Node.js from https://nodejs.org
     pause
     exit /b 1
-  )
+)
+
+echo [OK] Node.js found
+node --version
+
+echo.
+echo [INFO] Checking dependencies...
+if not exist "node_modules" (
+    echo [INFO] Installing dependencies... This may take a few minutes
+    call npm install --no-audit --no-fund
+    if %ERRORLEVEL% NEQ 0 (
+        echo [ERROR] Installation failed
+        pause
+        exit /b 1
+    )
+    echo [OK] Dependencies installed
 )
 
 echo.
-echo Starting Boomerang (Frontend + Backend)...
-echo Frontend: http://localhost:5173
-echo Backend:  http://localhost:5000
+echo [INFO] Initializing database...
+node initdb.mjs >nul 2>&1
+node makeadmin.mjs >nul 2>&1
+node server/seed.js >nul 2>&1
+echo [OK] Database ready
+
 echo.
-echo Close this window to stop both servers.
+echo ========================================================
+echo                 STARTING SERVERS
+echo ========================================================
+echo.
+echo [FRONTEND] http://localhost:5173
+echo [BACKEND]  http://localhost:5000
+echo [API]      http://localhost:5000/api
+echo.
+echo Press Ctrl+C in this window to stop all servers
+echo ========================================================
 echo.
 
 start "" "http://localhost:5173"
-call npm run dev
+call npx concurrently --kill-others "npm run server:dev" "npm run client:dev"
 
 echo.
-echo Boomerang stopped.
+echo [INFO] Servers stopped
 pause
