@@ -14,7 +14,8 @@
     "start": "npm run server:start",
     "test": "vitest run",
     "test:watch": "vitest",
-    "seed": "node server/seed.js"
+    "seed": "node server/seed.js",
+    "reset-db": "node -e \"require('fs').unlinkSync('data/boomerang.db');require('fs').unlinkSync('data/boomerang.db-shm');require('fs').unlinkSync('data/boomerang.db-wal')\" && node initdb.mjs && node makeadmin.mjs && node server/seed.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

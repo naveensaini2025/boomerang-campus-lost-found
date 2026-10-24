@@ -8,27 +8,27 @@ const router = express.Router();
 
 router.post('/register', async (req, res) => {
   try {
-    const { fullName, email, phone, password, rollNo, department, year } = req.body;
+    const { fullName, password, rollNo, collegeSerialNo, email, phone, department, year, section } = req.body;
     
-    if (!fullName || !password) {
-      return res.status(400).json({ error: 'Full name and password are required' });
+    if (!fullName || !password || !rollNo || !collegeSerialNo) {
+      return res.status(400).json({ error: 'Full name, password, Roll No and College Serial No are required' });
     }
     
-    const existing = db.prepare('SELECT id FROM users WHERE email = ? OR phone = ?').get(email, phone);
+    const existing = db.prepare('SELECT id FROM users WHERE roll_no = ? OR college_serial_no = ? OR email = ?').get(rollNo, collegeSerialNo, email);
     if (existing) {
-      return res.status(400).json({ error: 'User already exists' });
+      return res.status(400).json({ error: 'User already exists with this Roll No or College Serial No' });
     }
     
     const id = uuidv4();
     const passwordHash = await bcrypt.hash(password, 10);
     
     db.prepare(`
-      INSERT INTO users (id, full_name, email, phone, password_hash, roll_no, department, year)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(id, fullName, email, phone, passwordHash, rollNo, department, year);
+      INSERT INTO users (id, full_name, email, phone, password_hash, roll_no, college_serial_no, department, year, section)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(id, fullName, email || null, phone || null, passwordHash, rollNo, collegeSerialNo, department, year, section);
     
     const token = generateToken(id);
-    const user = db.prepare('SELECT id, full_name, email, phone, roll_no, department, year, karma, returns_count, avatar FROM users WHERE id = ?').get(id);
+    const user = db.prepare('SELECT id, full_name, email, phone, roll_no, college_serial_no, department, year, section, karma, returns_count, avatar, role FROM users WHERE id = ?').get(id);
     
     res.status(201).json({ token, user });
   } catch (error) {
@@ -39,15 +39,18 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   try {
-    const { email, phone, password } = req.body;
+    const { rollNo, collegeSerialNo, password } = req.body;
     
-    if ((!email && !phone) || !password) {
-      return res.status(400).json({ error: 'Email/Phone and password are required' });
+    if ((!rollNo && !collegeSerialNo) || !password) {
+      return res.status(400).json({ error: 'Roll No/College Serial No and password are required' });
     }
     
-    const user = db.prepare('SELECT * FROM users WHERE email = ? OR phone = ?').get(email, phone);
+    const user = db.prepare('SELECT * FROM users WHERE roll_no = ? OR college_serial_no = ?').get(rollNo, collegeSerialNo);
     if (!user) {
       return res.status(400).json({ error: 'Invalid credentials' });
+    }
+    if (!user.is_active) {
+      return res.status(403).json({ error: 'Account deactivated. Contact admin.' });
     }
     
     const valid = await bcrypt.compare(password, user.password_hash);
@@ -91,7 +94,7 @@ router.post('/demo-login', (req, res) => {
 
 router.get('/me', authMiddleware, (req, res) => {
   try {
-    const user = db.prepare('SELECT id, full_name, email, phone, roll_no, department, year, karma, returns_count, avatar, role, created_at FROM users WHERE id = ?').get(req.userId);
+    const user = db.prepare('SELECT id, full_name, email, phone, roll_no, college_serial_no, department, year, section, karma, returns_count, avatar, role, created_at FROM users WHERE id = ?').get(req.userId);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
