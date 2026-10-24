@@ -127,6 +127,27 @@ export function initDB() {
       FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
     );
 
+    CREATE TABLE IF NOT EXISTS qr_codes (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      item_id TEXT,
+      qr_data TEXT NOT NULL,
+      type TEXT DEFAULT 'item',
+      scans INTEGER DEFAULT 0,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+      FOREIGN KEY(item_id) REFERENCES items(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS activity_log (
+      id TEXT PRIMARY KEY,
+      user_id TEXT,
+      action TEXT NOT NULL,
+      details TEXT,
+      ip_address TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
     CREATE INDEX IF NOT EXISTS idx_items_type ON items(type);
     CREATE INDEX IF NOT EXISTS idx_items_status ON items(status);
     CREATE INDEX IF NOT EXISTS idx_items_category ON items(category);

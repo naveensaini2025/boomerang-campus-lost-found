@@ -17,6 +17,8 @@ import messagesRoutes from './routes/messages.js';
 import userRoutes from './routes/user.js';
 import adminRoutes from './routes/admin.js';
 import aiRoutes from './routes/ai.js';
+import notificationsRoutes from './routes/notifications.js';
+import qrRoutes from './routes/qr.js';
 
 dotenv.config();
 
@@ -55,6 +57,8 @@ app.use('/api/messages', messagesRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/notifications', notificationsRoutes);
+app.use('/api/qr', qrRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Boomerang API is running' });
