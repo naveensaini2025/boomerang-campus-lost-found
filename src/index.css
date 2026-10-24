@@ -11,7 +11,7 @@
   }
 
   body {
-    @apply bg-[#EDF0F8] font-sans text-ink antialiased;
+    @apply bg-slate-50 font-sans text-slate-900 antialiased;
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -23,14 +23,14 @@
   }
 
   ::selection {
-    background: #f2b01e55;
+    background: #3b82f655;
   }
 }
 
-/* ---------- App shell: full-screen mobile, sidebar layout on desktop ---------- */
+/* ---------- App shell ---------- */
 .app-stage {
   min-height: 100dvh;
-  background: #edf0f8;
+  background: radial-gradient(ellipse at top, #f8fafc 0%, #f1f5f9 100%);
 }
 
 .app-shell {
@@ -46,7 +46,7 @@
   flex: 1;
   flex-direction: column;
   height: 100dvh;
-  background: #f4f6fb;
+  background: transparent;
 }
 
 .app-scroll {
@@ -56,11 +56,11 @@
 
 @media (min-width: 1024px) {
   .app-main {
-    border-left: 1px solid rgba(27, 42, 107, 0.08);
+    margin-left: 0;
   }
 }
 
-/* Thin scrollbars hidden for an app-like feel */
+/* Thin scrollbars */
 .no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -69,7 +69,7 @@
   display: none;
 }
 
-/* Toast + modals sit above the whole app on every screen size. */
+/* Modal */
 .app-modal {
   position: fixed;
   inset: 0;
@@ -78,76 +78,67 @@
   align-items: center;
   justify-content: center;
   overflow-y: auto;
-  background: rgba(27, 42, 107, 0.5);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
   padding: 24px 20px;
-  backdrop-filter: blur(4px);
 }
 
-/* ---------- Gradients ---------- */
+/* Gradients */
 .hero-gradient {
-  background:
-    radial-gradient(circle at 88% 8%, rgba(120, 86, 255, 0.55), transparent 45%),
-    radial-gradient(circle at 8% 95%, rgba(15, 157, 116, 0.18), transparent 40%),
-    linear-gradient(135deg, #1b2a6b 0%, #2b2a7d 45%, #4b2fa0 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
 }
 
 .card-gradient {
-  background:
-    radial-gradient(circle at 100% 0%, rgba(242, 176, 30, 0.18), transparent 42%),
-    linear-gradient(135deg, #1b2a6b 0%, #4b2fa0 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
 }
 
-/* ---------- Cards / inputs ---------- */
+/* Components */
 @layer components {
   .card {
-    @apply rounded-2xl border border-white/80 bg-white shadow-card;
+    @apply rounded-2xl border border-slate-200/60 bg-white shadow-sm transition-all duration-200 hover:shadow-md;
+  }
+
+  .card-premium {
+    @apply rounded-3xl border border-slate-200/60 bg-white shadow-lg shadow-slate-900/5 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/10;
   }
 
   .field {
-    @apply w-full rounded-xl border border-[#DFE4F2] bg-white px-3 py-2.5 text-sm text-ink outline-none transition placeholder:text-slate-400 focus:border-purple focus:ring-2 focus:ring-purple/20;
+    @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5;
   }
 
   .label {
-    @apply mb-1.5 block text-[11px] font-bold uppercase tracking-wide text-slate-500;
+    @apply mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-600;
   }
 
   .btn-primary {
-    @apply flex w-full items-center justify-center gap-2 rounded-xl bg-navy px-4 py-3 text-sm font-bold text-white shadow-lg shadow-navy/20 transition active:scale-[0.98] hover:bg-[#24357f];
+    @apply flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-slate-800 active:scale-[0.98];
   }
 
-  .btn-amber {
-    @apply flex w-full items-center justify-center gap-2 rounded-xl bg-amber px-4 py-3 text-sm font-extrabold text-navy shadow-lg shadow-amber/30 transition active:scale-[0.98] hover:brightness-105;
+  .btn-blue {
+    @apply flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/25 transition-all hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-600/30 active:scale-[0.98];
   }
 
   .btn-ghost {
-    @apply flex items-center justify-center gap-2 rounded-xl border border-[#DDE2F1] bg-white px-4 py-2.5 text-sm font-semibold text-navy transition hover:bg-slate-50 active:scale-[0.98];
+    @apply flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition-all hover:bg-slate-50 hover:border-slate-300 active:scale-[0.98];
   }
 
   .pill {
-    @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide;
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold;
   }
 }
 
-/* ---------- Status stepper arrows ---------- */
+/* Status stepper */
 .step-arrow {
-  clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 50%, calc(100% - 7px) 100%, 0 100%, 7px 50%);
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%, 8px 50%);
 }
 
-/* Fluffy little confetti fallback if canvas-confetti is unavailable */
-@keyframes confetti-fall {
-  0% {
-    transform: translateY(-10px) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(90px) rotate(320deg);
-    opacity: 0;
-  }
+/* Animations */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
-.confetti-bit {
-  position: absolute;
-  width: 6px;
-  height: 10px;
-  border-radius: 2px;
-  animation: confetti-fall 1s ease-in forwards;
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
 }
